@@ -103,3 +103,21 @@ class FirmSample:
         )
         print("Anzahl (CIK, year) mit n>1 NACH Dedup (sollte 0 sein):",
               len(dups_after[dups_after["n"] > 1]))
+
+        # Filing-Jahr = Textjahr t, wir messen Performance in t+1
+        self.df_one["perf_year"] = self.df_one["year"] + 1
+
+        print("\nBeispiel-Zeilen (CIK, year, perf_year):")
+        print(self.df_one[["CIK", "year", "perf_year"]].head())
+
+        # Falls du später URLs bauen oder mit der SEC-Submissions-API arbeiten willst:
+        self.df_one["CIK_str"] = self.df_one["CIK"].astype(int).astype(str).str.zfill(10)
+
+        print("\nBeispiel CIK-Format (numerisch vs. String):")
+        print(self.df_one[["CIK", "CIK_str"]].head())
+
+        # --- Schritt 4: Panel abspeichern ---
+
+        output_path = r"C:\Users\PC\Downloads\firm_year_10K_panel_2019_2023_nonfin_nonutil.csv"
+        self.df_one.to_csv(output_path, index=False)
+        print(f"\nPanel-Datei gespeichert unter: {output_path}")
